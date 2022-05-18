@@ -8,15 +8,6 @@ local KeyCode = Enum.KeyCode.G
 local ToolName
 local Cooldown
 
-function functions:SpamTool(N, C)
-    if (type(N) == "string") then
-        ToolName = N
-    end
-    if (type(C) == "number") then
-        Cooldown = C
-    end
-end
-
 local function SpamDynamite()
 	if not Character:FindFirstChild(ToolName) and Player.Backpack:FindFirstChild(ToolName) then
 		local Dynamite = Player.Backpack:FindFirstChild(ToolName)
@@ -27,7 +18,27 @@ local function SpamDynamite()
 		local Dynamite = Character:FindFirstChild(ToolName)
 		wait()
 		mouse1click()
-	end
+end
+
+function functions:SpamTool(N, C)
+    if (type(N) == "string") then
+        ToolName = N
+    end
+    if (type(C) == "number") then
+        Cooldown = C
+    end
+    
+    while true do
+	wait(Cooldown)
+	if Auto then
+		if Player.Backpack:FindFirstChild(ToolName) then
+			Player.Backpack:FindFirstChild(ToolName).Parent = Character
+			SpamDynamite()
+			wait()
+		    end
+	    end
+    end
+    end
 end
 
 UIS.InputBegan:Connect(function(Input, Chat)
@@ -41,16 +52,5 @@ UIS.InputBegan:Connect(function(Input, Chat)
 		end
 	end
 end)
-
-while true do
-	wait(Cooldown)
-	if Auto then
-		if Player.Backpack:FindFirstChild(ToolName) then
-			Player.Backpack:FindFirstChild(ToolName).Parent = Character
-			SpamDynamite()
-			wait()
-		end
-	end
-end
 
 return functions
