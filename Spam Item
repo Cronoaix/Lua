@@ -19,6 +19,7 @@ local function SpamDynamite()
 		wait()
 		mouse1click()
 end
+end
 
 function functions:SpamTool(N, C)
     if (type(N) == "string") then
@@ -37,7 +38,6 @@ function functions:SpamTool(N, C)
 			wait()
 		    end
 	    end
-    end
     end
 end
 
