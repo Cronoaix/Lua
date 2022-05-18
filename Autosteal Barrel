@@ -133,3 +133,5 @@ Player.CharacterAdded:Connect(function(Character)
         AdorneeConnection:Disconnect()
     end)
 end)
+
+--Created By Cronoaix
