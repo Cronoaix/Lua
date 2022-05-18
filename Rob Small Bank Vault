@@ -1,0 +1,64 @@
+repeat
+    wait(.1)
+until game:IsLoaded()
+local TeleportService = game:GetService("TeleportService")
+local Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character
+local Camera = workspace:WaitForChild("Camera")
+local HRP = Character:WaitForChild("HumanoidRootPart")
+local SmallSafe = workspace:WaitForChild("Safety")
+local Wedge = workspace:WaitForChild("Safety"):FindFirstChild("Wedge")
+local Lock = SmallSafe:FindFirstChild("Lock")
+
+local function OrientateCamera(Part)
+    Camera.CFrame = CFrame.new(Camera.CFrame.Position, Part.Position)
+    Player.CameraMode = Enum.CameraMode.LockFirstPerson
+end
+local function MoveMouseToObject(Part)
+    local vector, onScreen = Camera:WorldToScreenPoint(Part.Position)
+    mousemoveabs(vector.X, vector.Y)
+end
+local function Rejoin()
+    Player:Kick("Rejoining...")
+    wait()
+    TeleportService:Teleport(2696421772, Player)
+end
+local function CharacterLerp(LerpTo)
+    repeat
+        wait()
+    until iswindowactive()
+    for i=0,1,0.001 do
+        HRP.CFrame = HRP.CFrame:Lerp(LerpTo.CFrame, i)
+        OrientateCamera(LerpTo)
+        if (HRP.Position - LerpTo.Position).Magnitude <= 3 then  
+            break
+        end
+        wait()
+    end
+    if Player.Backpack:FindFirstChild("Lockpick") or Player.Backpack:FindFirstChild("Lockpicks") then
+        if Player.Backpack:FindFirstChild("Lockpick") then
+            Character:FindFirstChild("Humanoid"):EquipTool(Player.Backpack:FindFirstChild("Lockpick"))
+        else
+            Character:FindFirstChild("Humanoid"):EquipTool(Player.Backpack:FindFirstChild("Lockpicks"))   
+        end
+        wait(.1)
+        OrientateCamera(LerpTo)
+        MoveMouseToObject(Wedge)
+        mouse1press()
+        wait(5)
+        if workspace:FindFirstChild("Safe2"):FindFirstChild("Money Stack") then
+            local Money =  workspace:FindFirstChild("Safe2"):FindFirstChild("Money Stack")
+            for _, p in pairs(Money:GetDescendants()) do
+                if p:IsA("Part") and p:FindFirstChild("TouchInterest") then
+                    Character:FindFirstChild("HumanoidRootPart").CFrame = p.CFrame
+                end
+            end
+        end
+        wait(1)
+        Rejoin()
+    end
+end
+wait(1)
+CharacterLerp(Wedge)
+
+--Created By Cronoaix
