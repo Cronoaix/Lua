@@ -1,0 +1,67 @@
+local Barrels = {}
+
+local function CreateESP(Part)
+    if Part:FindFirstChild("Info") then
+        return
+    end
+    local BillboardGui = Instance.new("BillboardGui", Part)
+    BillboardGui.Name = "Info"
+    BillboardGui.AlwaysOnTop = true
+    BillboardGui.Size = UDim2.fromScale(10,1)
+    BillboardGui.StudsOffset = Vector3.new(0,3,0)
+    local TextLabel = Part.SurfaceGui.TextLabel:Clone()
+    TextLabel.Parent = BillboardGui
+    TextLabel.Size = UDim2.fromScale(1,1)
+    TextLabel.Text = TextLabel.Text..", ["..Part.Owner.Value.."], ".."[Locked: "..tostring(Part.Lock.Value).."]"
+    for i, item in pairs(Enum.NormalId:GetEnumItems()) do
+	    local SurfaceGui = Instance.new("SurfaceGui", Part)
+	    SurfaceGui.Name = item.Name
+	    SurfaceGui.AlwaysOnTop = true
+	    SurfaceGui.Face = item
+	    local Frame = Instance.new("Frame", SurfaceGui)
+	    Frame.Size = UDim2.fromScale(1,1)
+	    Frame.Transparency = .8
+	    Frame.BackgroundColor = BrickColor.new("Really red")
+    end
+end
+
+local function ESPBarrels()
+    for _, part in pairs(Barrels) do
+        CreateESP(part)
+        local TextLabel = part.Info.TextLabel
+        local Lock = part.Lock
+        local Type = part.Type
+        local Owner = part.Owner
+        local Number = part.Num
+        Lock.Changed:Connect(function()
+            TextLabel.Text = Type.Value.." ["..tostring(Number.Value).."/"..tostring(Number.MaxValue).."], [Owner: "..Owner.Value.."], ".."[Locked: "..tostring(Lock.Value).."]"
+        end)
+        Number.Changed:Connect(function()
+            TextLabel.Text = Type.Value.." ["..tostring(Number.Value).."/"..tostring(Number.MaxValue).."], [Owner: "..Owner.Value.."), ".."[Locked: "..tostring(Lock.Value).."]"
+        end)
+    end
+end
+
+local function UpdateBarrels(Child)
+    if Child:IsA("UnionOperation") and (Child.Name == "Barrel") then
+        table.insert(Barrels, Child)
+        wait(1)
+        ESPBarrels()
+    end
+end
+
+local function GetAllBarrels()
+    for _, barrel in pairs(workspace:GetChildren()) do
+        if barrel:IsA("UnionOperation") and (barrel.Name == "Barrel") then
+            table.insert(Barrels, barrel)
+        end
+    end
+end
+
+GetAllBarrels()
+wait(1)
+ESPBarrels()
+
+workspace.ChildAdded:Connect(UpdateBarrels)
+
+--Created By Cronoaix
