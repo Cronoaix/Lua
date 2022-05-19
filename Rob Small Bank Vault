@@ -1,3 +1,4 @@
+--HAVE A LOCKPICK (NOT EQUIPED) IN YOUR INVENTORY THEN EXECUTE
 repeat
     wait(.1)
 until game:IsLoaded()
