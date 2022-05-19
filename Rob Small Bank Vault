@@ -9,7 +9,7 @@ local HRP = Character:WaitForChild("HumanoidRootPart")
 local SmallSafe = workspace:WaitForChild("Safety")
 local Wedge = workspace:WaitForChild("Safety"):FindFirstChild("Wedge")
 local Lock = SmallSafe:FindFirstChild("Lock")
-
+print(HRP, SmallSafe)
 local function OrientateCamera(Part)
     Camera.CFrame = CFrame.new(Camera.CFrame.Position, Part.Position)
     Player.CameraMode = Enum.CameraMode.LockFirstPerson
@@ -27,6 +27,9 @@ local function CharacterLerp(LerpTo)
     repeat
         wait()
     until iswindowactive()
+    if not Player.Backpack:FindFirstChild("Lockpick") or Player.Backpack:FindFirstChild("Lockpicks") then
+        return
+    end
     for i=0,1,0.001 do
         HRP.CFrame = HRP.CFrame:Lerp(LerpTo.CFrame, i)
         OrientateCamera(LerpTo)
